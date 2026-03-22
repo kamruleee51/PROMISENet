@@ -150,17 +150,4 @@ The planned training pipeline will include:
 
 PROMISE-Net bridges the gap between **interactive segmentation** and **deep hierarchical feature learning**.
 
----
-
-## 📚 Citation
-
-If you use this code, please cite:
-
-```bibtex
-@article{PROMISENet2025,
-  title={Prompt-Conditioned Channel Attention for Hierarchical Feature Modulation in Medical Image Segmentation},
-  author={Mosharof Hossain, Md Rabiul Islam, Limon Halder, Md Kamrul Hasan},
-  journal={IEEE},
-  year={2023}
-}
 
