@@ -1,0 +1,24 @@
+# ISIC-2017 Skin Lesion (binary: background + lesion)
+dataset_type: isic2017
+num_classes: 2
+num_input_channels: 3
+img_size: 256
+
+# Training protocol (paper §Training Protocol and Evaluation)
+epochs: 150
+batch_size: 16
+lr: 1.0e-4
+offline_augmentation: false   # ISIC-2017 is the one dataset NOT offline-augmented
+
+# Loss weights: total_loss = dice_weight * dice_loss + ce_weight * cross_entropy (binary datasets)
+dice_weight: 1.0
+ce_weight: 0.5
+
+# Dice-loss differentiability and bbox-perturbation style differ by model for this dataset only —
+# see promisenet/losses.py and promisenet/data/bbox_utils.py docstrings for why.
+cnn:
+  differentiable_dice: false   # matches the canonical PROMISE-CNN training code
+  random_bbox_perturb: false   # fixed +/-20px expansion
+txformer:
+  differentiable_dice: true    # matches the canonical PROMISE-Txformer training code
+  random_bbox_perturb: true    # random [0,20)px expansion, redrawn every call

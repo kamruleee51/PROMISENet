@@ -1,0 +1,22 @@
+# Kvasir-Polyp / Kvasir-SEG (binary: background + polyp)
+dataset_type: kvasir_polyp
+num_classes: 2
+num_input_channels: 3
+img_size: 256
+
+epochs: 150
+batch_size: 16
+lr: 1.0e-4
+offline_augmentation: true   # via scripts/prepare_kvasir.py
+
+dice_weight: 1.0
+ce_weight: 0.5
+
+# Both PROMISE-CNN and PROMISE-Txformer use the same (contour-based, max_perturb=10) bbox
+# extraction and the same non-differentiable-CNN / differentiable-Txformer Dice pattern seen
+# across every dataset except ISIC-2017 (which has its own bbox-perturbation quirk, see
+# configs/isic2017.yaml).
+cnn:
+  differentiable_dice: false
+txformer:
+  differentiable_dice: true

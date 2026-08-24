@@ -1,0 +1,22 @@
+# CAMUS 2D Echocardiography (multi-class: background + LV + MYO + LA)
+dataset_type: camus
+num_classes: 4
+num_input_channels: 3
+img_size: 256
+
+epochs: 150
+batch_size: 16
+lr: 1.0e-4
+offline_augmentation: true   # via scripts/prepare_camus.py
+
+# CAMUS is the one dataset that uses different loss weights (multiclass, not binary):
+dice_weight: 0.6
+ce_weight: 0.4
+
+# CAMUS is also the one dataset where PROMISE-Txformer uses the non-differentiable Dice loss too
+# (matching PROMISE-CNN's pattern) — unlike ISIC-2017/Kvasir-Polyp/Kvasir-Instrument, where
+# PROMISE-Txformer uses the differentiable version. Verified directly against the source notebooks.
+cnn:
+  differentiable_dice: false
+txformer:
+  differentiable_dice: false

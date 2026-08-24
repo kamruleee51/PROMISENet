@@ -1,0 +1,18 @@
+# Kvasir-Instrument (binary: background + surgical instrument)
+dataset_type: kvasir_instrument
+num_classes: 2
+num_input_channels: 3
+img_size: 256
+
+epochs: 150
+batch_size: 16
+lr: 1.0e-4
+offline_augmentation: true   # via scripts/prepare_kvasir.py
+
+dice_weight: 1.0
+ce_weight: 0.5
+
+cnn:
+  differentiable_dice: false
+txformer:
+  differentiable_dice: true
