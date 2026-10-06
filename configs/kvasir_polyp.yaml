@@ -13,9 +13,8 @@ dice_weight: 1.0
 ce_weight: 0.5
 
 # Both PROMISE-CNN and PROMISE-Txformer use the same (contour-based, max_perturb=10) bbox
-# extraction and the same non-differentiable Dice pattern — identical across both models here
-# (ISIC-2017 has its own bbox-perturbation quirk instead, see configs/isic2017.yaml).
+# extraction (ISIC-2017 has its own bbox-perturbation quirk instead, see configs/isic2017.yaml).
 cnn:
   differentiable_dice: false
 txformer:
-  differentiable_dice: false
+  differentiable_dice: true

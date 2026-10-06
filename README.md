@@ -5,10 +5,10 @@ the model proposed in *"Prompt-Conditioned Channel Attention for Hierarchical Fe
 toward Anatomy-Agnostic Segmentation."*
 
 This repo contains **only the proposed model** — PCCA (Prompt-Conditioned Channel Attention) and its
-two backbones, PROMISE-CNN (U-Net) and PROMISE-Txformer (a custom transformer encoder + CNN decoder)
-— trainable and testable on all four benchmarks from the paper: ISIC-2017, Kvasir-Polyp,
-Kvasir-Instrument, and CAMUS. Baseline models (U-Net, UNETR, SAM) and ablation code are intentionally
-not included here; this repo is scoped for reproducing the proposed model's results specifically.
+two backbones, PROMISE-CNN (U-Net) and PROMISE-Txformer (UNETR) — trainable and testable on all four
+benchmarks from the paper: ISIC-2017, Kvasir-Polyp, Kvasir-Instrument, and CAMUS. Baseline models
+(U-Net, UNETR, SAM) and ablation code are intentionally not included here; this repo is scoped for
+reproducing the proposed model's results specifically.
 
 ## What is PCCA?
 
@@ -18,11 +18,11 @@ descriptors are projected into a shared latent space, summed, and passed through
 to produce a channel-wise gate — combined with a direct prompt-multiplication term for
 spatially-precise modulation. See `promisenet/models/pcca.py`.
 
-**Where PCCA is applied differs by backbone** — this is intentional, not an inconsistency:
-- **PROMISE-CNN**: every encoder stage, the bottleneck, and every decoder stage.
-- **PROMISE-Txformer**: the bottleneck and every decoder stage only. The encoder is the transformer
-  itself (patch embedding + 12 self-attention layers) — there is no spatial feature map to gate until
-  its output is reshaped at the bottleneck, so no encoder-stage PCCA is applied for this variant.
+PCCA is applied at every encoder stage and the bottleneck for both backbones. For PROMISE-CNN, it is
+also re-applied at every decoder stage. For PROMISE-Txformer, "encoder stage" means the skip-connection
+features UNETR builds from intermediate ViT hidden states (not the transformer's self-attention
+computation itself, which is never conditioned on the prompt) — see
+`promisenet/models/promisenet_txformer.py`'s `forward()`.
 
 ## Installation
 
@@ -68,8 +68,7 @@ PROMISENet/
 │   ├── models/
 │   │   ├── pcca.py                 PCCA module + bounding-box prompt encoder
 │   │   ├── promisenet_cnn.py       PROMISE-CNN (U-Net + PCCA at every stage)
-│   │   └── promisenet_txformer.py  PROMISE-Txformer (custom transformer + CNN decoder, PCCA at
-│   │                               bottleneck + decoder only)
+│   │   └── promisenet_txformer.py  PROMISE-Txformer (UNETR + PCCA)
 │   ├── data/
 │   │   ├── datasets.py             ISICDataset, CAMUSDataset, KvasirDataset
 │   │   └── bbox_utils.py           Automated bounding-box extraction from masks
@@ -85,32 +84,23 @@ PROMISENet/
 └── test.py
 ```
 
-## Faithfulness notes (read before changing hyperparameters)
+## Notes (read before changing hyperparameters)
 
-This code is a direct extraction from the original experiment notebooks. Where a canonical source was
-ambiguous, it was resolved either by matching candidate implementations against the paper's exact
-reported numbers, or by direct confirmation from the paper's author — see
-`promisenet/models/promisenet_txformer.py`'s module docstring for one case where those two methods
-initially disagreed, and the author's confirmation of which implementation to use. Non-obvious
-properties of the *actual* training code are preserved here rather than "corrected," because
-correcting them would mean the code no longer reproduces the paper's reported results:
+This code is a direct extraction from the original experiment notebooks. A few non-obvious properties
+of the training setup are preserved exactly, since changing them would mean the code no longer
+reproduces the paper's reported results:
 
-1. **PCCA's placement differs by backbone** — PROMISE-CNN gates every encoder stage, the bottleneck,
-   and every decoder stage; PROMISE-Txformer gates only the bottleneck and every decoder stage (no
-   encoder-stage gating, since the encoder is the transformer itself). See "What is PCCA?" above and
-   `promisenet/models/promisenet_txformer.py`'s module docstring.
-2. **Dice loss is non-differentiable everywhere.** Both models, on all four datasets, compute the
-   Dice-loss term from `argmax`-then-one-hot predictions, which has no real gradient path back to the
-   model — training is effectively driven by the cross-entropy term alone, despite the code nominally
-   computing "Dice + CE". See `promisenet/losses.py`'s module docstring.
-3. **Both models' cross-entropy term is computed on already-softmaxed values** — both `forward()`
-   methods apply softmax internally, and `compute_loss` must be called with that output unchanged (no
-   extra softmax in between). This is mathematically unusual (a second softmax gets applied inside
-   `nn.CrossEntropyLoss`) but is what both models were actually trained with.
-4. **ISIC-2017's automated bounding box differs between the two models**: PROMISE-CNN expands the
+1. **Dice-loss differentiability varies by (model, dataset)** — PROMISE-CNN (all datasets) and
+   PROMISE-Txformer on CAMUS compute the Dice-loss term from `argmax`-then-one-hot predictions, which
+   has no real gradient path back to the model; training is effectively driven by the cross-entropy
+   term alone in these cases. PROMISE-Txformer on the three binary datasets computes Dice from softmax
+   probabilities (properly differentiable). See `promisenet/losses.py`.
+2. **PROMISE-CNN's cross-entropy term is computed on already-softmaxed values** — its `forward()`
+   applies softmax internally, and `compute_loss` must be called with that output unchanged (no extra
+   softmax in between). PROMISE-Txformer returns raw logits instead.
+3. **ISIC-2017's automated bounding box differs between the two models**: PROMISE-CNN expands the
    ground-truth box by a fixed ±20px; PROMISE-Txformer expands it by a random [0,20)px offset,
-   redrawn every call. See `promisenet/data/bbox_utils.py`'s module docstring and
-   `configs/isic2017.yaml`.
+   redrawn every call. See `promisenet/data/bbox_utils.py` and `configs/isic2017.yaml`.
 
 ## Citation
 

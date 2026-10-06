@@ -14,12 +14,11 @@ offline_augmentation: false   # ISIC-2017 is the one dataset NOT offline-augment
 dice_weight: 1.0
 ce_weight: 0.5
 
-# Dice loss is non-differentiable for both models (see promisenet/losses.py docstring) — only the
-# bbox-perturbation style differs by model for this dataset specifically (see
-# promisenet/data/bbox_utils.py docstring for why).
+# Dice-loss differentiability and bbox-perturbation style differ by model for this dataset only —
+# see promisenet/losses.py and promisenet/data/bbox_utils.py docstrings for why.
 cnn:
   differentiable_dice: false
   random_bbox_perturb: false   # fixed +/-20px expansion
 txformer:
-  differentiable_dice: false
+  differentiable_dice: true
   random_bbox_perturb: true    # random [0,20)px expansion, redrawn every call

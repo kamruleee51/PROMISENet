@@ -8,13 +8,9 @@ need to run `scripts/prepare_camus.py` / `scripts/prepare_kvasir.py` yourself. I
 the data from scratch (e.g. to audit the exact preprocessing, or because you don't have Kaggle access),
 each dataset's official source and the prep scripts are listed as the alternative under each heading.
 
-> **Note on the Kaggle links**: I couldn't verify their exact internal folder/file structure — Kaggle's
-> dataset pages don't expose file listings to automated fetching, only the title. The paths shown below
-> assume the same layout `augment_split()` (`scripts/augment_utils.py`) produces
-> (`{split}/images/{aug_type}/*.png`, mirrored under `masks/`), since that's what "already
-> resized and augmented" implies and matches how `promisenet/data/datasets.py`'s glob patterns are
-> written. If your actual download differs, adjust the glob patterns in `train.py`/`test.py`
-> accordingly, or reorganize the files to match.
+> The paths below assume the layout `augment_split()` (`scripts/augment_utils.py`) produces —
+> `{split}/images/{aug_type}/*.png`, mirrored under `masks/`. If your download differs, adjust the
+> glob patterns in `train.py`/`test.py` or reorganize the files to match.
 
 ## ISIC-2017 (Skin Lesion)
 

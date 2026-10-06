@@ -1,13 +1,7 @@
 """
-Prepare Kvasir-Polyp or Kvasir-Instrument with offline augmentations, using the exact same
-augmentation pipeline as CAMUS (scripts/augment_utils.py's `augment_split`). Per the paper's training
-protocol: "Extensive offline data augmentation was applied to the CAMUS, Kvasir-Polyp, and
-Kvasir-Instrument datasets" (only ISIC-2017 is NOT offline-augmented) — this script covers both
-Kvasir datasets. For Kvasir-Polyp specifically, this is not a guess: the source repo's
-data/KVASIR/annotated/ directory already contains the same five-way {original, H_flipped, V_flipped,
-rotated, combined} split structure that this script produces, confirming the same augmentation scheme
-was applied in the original experiments (see the source repo's
-agent_files/06_audit_misc_newproj_figures_data.md).
+Prepare Kvasir-Polyp or Kvasir-Instrument with offline augmentations, using the same augmentation
+pipeline as CAMUS (scripts/augment_utils.py's `augment_split`). Per the paper's training protocol,
+offline augmentation is applied to CAMUS, Kvasir-Polyp, and Kvasir-Instrument (only ISIC-2017 is not).
 
 Expects pre-separated data in:
     raw_dir/

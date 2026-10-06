@@ -13,8 +13,9 @@ offline_augmentation: true   # via scripts/prepare_camus.py
 dice_weight: 0.6
 ce_weight: 0.4
 
-# Dice loss is non-differentiable for both models, same as every other dataset (see
-# promisenet/losses.py docstring).
+# CAMUS is also the one dataset where PROMISE-Txformer uses the non-differentiable Dice loss too
+# (matching PROMISE-CNN's pattern) — unlike ISIC-2017/Kvasir-Polyp/Kvasir-Instrument, where
+# PROMISE-Txformer uses the differentiable version.
 cnn:
   differentiable_dice: false
 txformer:

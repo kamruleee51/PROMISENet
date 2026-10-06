@@ -1,13 +1,7 @@
 """
 Prompt-Conditioned Channel Attention (PCCA) and the bounding-box prompt encoder.
 
-Faithful extraction from the notebooks confirmed, by the paper's author directly, to be the
-canonical source for PROMISE-CNN and PROMISE-Txformer:
-    Experiments_2.0/{dataset}/MultiGateAttention/.../SE/*.ipynb   (both PROMISE-CNN and
-                                                                    PROMISE-Txformer's `prompt_UNetr`)
-This same `PromptSEFusion_gate`/`BoxPositionEncoder` pair is shared by both model files — see
-agent_files/09_txformer_decoder_discrepancy.md in the source repo for the history of how the
-PROMISE-Txformer source was confirmed (an earlier candidate, Unetr_monai/gated_unetr, was ruled out).
+Shared by both PROMISE-CNN (promisenet_cnn.py) and PROMISE-Txformer (promisenet_txformer.py).
 """
 from typing import Tuple
 
@@ -83,12 +77,8 @@ class PositionEmbeddingRandom(nn.Module):
 class BoxPositionEncoder(nn.Module):
     """Bounding-box prompt encoder: box(es) -> dense (embed_dim, H, W) feature map.
 
-    Each stage of PROMISE-CNN / PROMISE-Txformer instantiates its OWN independently-weighted
-    BoxPositionEncoder, hardcoded to that stage's exact (embed_dim, feature_size) — this is a
-    genuine deviation from the paper's described "encode once, resize per level" Prompt Encoder
-    (Eqs. eq:fbox-eq:promptscale), which was verified in the source repo and is preserved here
-    rather than "corrected" to the paper's literal description, since it's what actually produced
-    the reported numbers.
+    Each stage of PROMISE-CNN / PROMISE-Txformer instantiates its own independently-weighted
+    BoxPositionEncoder, sized to that stage's (embed_dim, feature_size).
 
     Accepts boxes as [B, N, 4] to support both single-box datasets (ISIC, Kvasir; N=1) and
     multi-box datasets (CAMUS: one box per cardiac chamber).

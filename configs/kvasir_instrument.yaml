@@ -15,4 +15,4 @@ ce_weight: 0.5
 cnn:
   differentiable_dice: false
 txformer:
-  differentiable_dice: false
+  differentiable_dice: true
