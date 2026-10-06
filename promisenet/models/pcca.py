@@ -1,11 +1,13 @@
 """
 Prompt-Conditioned Channel Attention (PCCA) and the bounding-box prompt encoder.
 
-Faithful extraction from the notebooks confirmed (by exact match against the paper's reported
-Table results, see the audit in the source repo's agent_files/) to be the canonical source for
-PROMISE-CNN and PROMISE-Txformer:
-    Experiments_2.0/{dataset}/MultiGateAttention/.../SE/*.ipynb   (PROMISE-CNN)
-    Unetr_monai/gated_unetr/{dataset}/*.ipynb                     (PROMISE-Txformer)
+Faithful extraction from the notebooks confirmed, by the paper's author directly, to be the
+canonical source for PROMISE-CNN and PROMISE-Txformer:
+    Experiments_2.0/{dataset}/MultiGateAttention/.../SE/*.ipynb   (both PROMISE-CNN and
+                                                                    PROMISE-Txformer's `prompt_UNetr`)
+This same `PromptSEFusion_gate`/`BoxPositionEncoder` pair is shared by both model files — see
+agent_files/09_txformer_decoder_discrepancy.md in the source repo for the history of how the
+PROMISE-Txformer source was confirmed (an earlier candidate, Unetr_monai/gated_unetr, was ruled out).
 """
 from typing import Tuple
 

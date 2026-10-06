@@ -2,26 +2,26 @@
 Losses, faithfully matching what actually produced the paper's reported numbers — not an idealized
 rewrite. Two real quirks were found and are preserved rather than "fixed":
 
-1. Dice-loss differentiability differs by (model, dataset):
-   - PROMISE-CNN (all 4 datasets) and PROMISE-Txformer+CAMUS compute the Dice loss term from
-     `argmax`-then-one-hot predictions. `argmax` is non-differentiable, so this Dice term
-     contributes essentially no gradient to the model — training is effectively driven by the
-     cross-entropy term alone (scaled by `ce_weight`), despite the code nominally computing a
-     "Dice + CE" loss. Pass `differentiable_dice=False` to reproduce this (the default for CNN).
-   - PROMISE-Txformer on ISIC-2017 / Kvasir-Polyp / Kvasir-Instrument computes Dice from softmax
-     probabilities (properly differentiable). Pass `differentiable_dice=True` for these.
+1. Dice-loss is non-differentiable everywhere. Both PROMISE-CNN and PROMISE-Txformer, on all four
+   datasets, compute the Dice loss term from `argmax`-then-one-hot predictions. `argmax` is
+   non-differentiable, so this Dice term contributes essentially no gradient to the model — training
+   is effectively driven by the cross-entropy term alone (scaled by `ce_weight`), despite the code
+   nominally computing a "Dice + CE" loss. `differentiable_dice=False` (the default) reproduces this;
+   `differentiable_dice=True` exists only as an option for future experimentation, not because any
+   verified source notebook actually uses it.
 
 2. Loss weights depend only on binary vs. multiclass, not on model or dataset identity beyond that:
    - Binary (ISIC-2017, Kvasir-Polyp, Kvasir-Instrument): `dice_weight=1.0, ce_weight=0.5`.
    - Multiclass (CAMUS): `dice_weight=0.6, ce_weight=0.4`.
 
 3. `compute_loss` must be called with whatever the model returns directly — do NOT insert an extra
-   softmax before calling it. PROMISE-CNN's forward() already applies softmax internally (so
-   `predictions` arriving here is already probabilities); PROMISE-Txformer's forward() does not (raw
-   logits). This asymmetry is itself part of what was actually run (PROMISE-CNN's cross-entropy term
-   ends up computed on already-softmaxed values — a real, if unusual, property of the trained model —
-   while PROMISE-Txformer's does not). See configs/*.yaml for the resolved per-dataset/per-model
-   settings, and agent_files/ in the source repo for the full audit trail.
+   softmax before calling it. Both PROMISE-CNN's and PROMISE-Txformer's `forward()` already apply
+   softmax internally, so `predictions` arriving here is already probabilities for both models — this
+   means the cross-entropy term is computed on already-softmaxed values for both (a real, if unusual,
+   property of the trained models, not a bug introduced here). See configs/*.yaml for the resolved
+   per-dataset settings, and agent_files/ in the source repo for the full audit trail — including
+   agent_files/09_txformer_decoder_discrepancy.md, which documents a correction to which
+   PROMISE-Txformer implementation is canonical (this file reflects the corrected version).
 """
 import random
 
@@ -101,12 +101,12 @@ def compute_loss(
 ):
     """
     Args:
-        predictions: model output, passed through UNCHANGED from `model(...)` — softmax
-            probabilities for PROMISE-CNN, raw logits for PROMISE-Txformer. [B, num_classes, H, W]
+        predictions: model output, passed through UNCHANGED from `model(...)` — already softmax
+            probabilities for both PROMISE-CNN and PROMISE-Txformer. [B, num_classes, H, W]
         targets: [B, 1, H, W] integer class map.
         dice_weight, ce_weight: see module docstring — 1.0/0.5 for binary datasets, 0.6/0.4 for CAMUS.
-        differentiable_dice: see module docstring — False reproduces the non-differentiable Dice
-            term used everywhere except PROMISE-Txformer on the three binary datasets.
+        differentiable_dice: see module docstring — False (the default) reproduces every verified
+            source notebook's behavior; True is provided only for experimentation.
 
     Returns:
         (total_loss, dice_scores, iou_scores) — dice_scores/iou_scores are always computed from the

@@ -54,7 +54,7 @@ def build_model(cfg, model):
     img_size = cfg.get("img_size", 256)
     if model == "cnn":
         return PROMISENet_CNN(num_input_channels=in_ch, num_classes=num_classes, image_size=(img_size, img_size))
-    return PROMISENet_txformer(in_channels=in_ch, out_channels=num_classes, img_size=(img_size, img_size))
+    return PROMISENet_txformer(num_classes=num_classes, num_channels=in_ch, image_size=img_size)
 
 
 def main():
@@ -91,9 +91,7 @@ def main():
             bbox = batch["bbox"].to(device)
             name = batch["name"][0]
 
-            predictions = model(images, bbox)
-            # PROMISE-CNN already returns softmax probabilities; PROMISE-Txformer returns raw
-            # logits — apply softmax only if needed, argmax is invariant to it either way.
+            predictions = model(images, bbox)  # both models return softmax probabilities internally
             pred_mask = torch.argmax(predictions, dim=1)[0].cpu().numpy().astype(np.uint8)
             true_mask = masks[0, 0].cpu().numpy().astype(np.uint8)
 

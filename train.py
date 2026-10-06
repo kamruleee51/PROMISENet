@@ -66,7 +66,10 @@ def build_model(cfg, model):
     img_size = cfg.get("img_size", 256)
     if model == "cnn":
         return PROMISENet_CNN(num_input_channels=in_ch, num_classes=num_classes, image_size=(img_size, img_size))
-    return PROMISENet_txformer(in_channels=in_ch, out_channels=num_classes, img_size=(img_size, img_size))
+    # PROMISE-Txformer's transformer hyperparameters (patch_size/hidden_dim/num_layers/num_heads/
+    # mlp_dim/dropout_rate) are identical across all four datasets and use the class defaults —
+    # only num_classes/num_channels/image_size vary.
+    return PROMISENet_txformer(num_classes=num_classes, num_channels=in_ch, image_size=img_size)
 
 
 def main():
