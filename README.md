@@ -102,11 +102,29 @@ If you prefer pip, `pip install -r requirements.txt` also works, but it installs
 ## 🏋️ Training
 
 ```bash
-uv run python train.py --config configs/isic2017.yaml          --model cnn         --data_dir ./data/ISIC_2017
-uv run python train.py --config configs/isic2017.yaml          --model transformer --data_dir ./data/ISIC_2017
-uv run python train.py --config configs/kvasir_polyp.yaml      --model cnn         --data_dir ./data/kvasir_polyp_augmented
-uv run python train.py --config configs/kvasir_instrument.yaml --model cnn         --data_dir ./data/kvasir_instrument_augmented
-uv run python train.py --config configs/camus.yaml             --model transformer --data_dir ./data/camus_augmented
+# ISIC-2017, PROMISE-CNN
+uv run python train.py --config configs/isic2017.yaml --model cnn --data_dir ./data/ISIC_2017
+
+# ISIC-2017, PROMISE-Txformer
+uv run python train.py --config configs/isic2017.yaml --model transformer --data_dir ./data/ISIC_2017
+
+# Kvasir-Polyp, PROMISE-CNN
+uv run python train.py --config configs/kvasir_polyp.yaml --model cnn --data_dir ./data/kvasir_polyp_augmented
+
+# Kvasir-Polyp, PROMISE-Txformer
+uv run python train.py --config configs/kvasir_polyp.yaml --model transformer --data_dir ./data/kvasir_polyp_augmented
+
+# Kvasir-Instrument, PROMISE-CNN
+uv run python train.py --config configs/kvasir_instrument.yaml --model cnn --data_dir ./data/kvasir_instrument_augmented
+
+# Kvasir-Instrument, PROMISE-Txformer
+uv run python train.py --config configs/kvasir_instrument.yaml --model transformer --data_dir ./data/kvasir_instrument_augmented
+
+# CAMUS, PROMISE-CNN
+uv run python train.py --config configs/camus.yaml --model cnn --data_dir ./data/camus_augmented
+
+# CAMUS, PROMISE-Txformer
+uv run python train.py --config configs/camus.yaml --model transformer --data_dir ./data/camus_augmented
 ```
 
 - `--model cnn` trains PROMISE-CNN, `--model transformer` trains PROMISE-Txformer
