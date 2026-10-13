@@ -70,12 +70,12 @@ Both variants use **the same PCCA module**.
 
 ## 🧪 Datasets Supported
 
-| Dataset | Task | Modality | Classes |
+| Dataset | Task | Modality | Foreground |
 |------|------|------|------|
-| 🧴 ISIC-2017 | Skin lesion segmentation | Dermoscopy | 2 |
-| 🦠 Kvasir-SEG | Polyp segmentation | Endoscopy | 2 |
-| 🛠️ Kvasir-Instrument | Tool segmentation | Endoscopy | 2 |
-| ❤️ CAMUS | Cardiac chamber segmentation | Echocardiography | 4 (bg + LV + MYO + LA) |
+| 🧴 ISIC-2017 | Skin lesion segmentation | Dermoscopy | Lesion (binary) |
+| 🦠 Kvasir-SEG | Polyp segmentation | Endoscopy | Polyp (binary) |
+| 🛠️ Kvasir-Instrument | Tool segmentation | Endoscopy | Tool (binary) |
+| ❤️ CAMUS | Cardiac chamber segmentation | Echocardiography | 3 classes: LV, MYO, LA |
 
 Download links, licenses, expected layouts and the offline-augmentation scripts are in [docs/DATASETS.md](docs/DATASETS.md). ISIC-2017 is trained on the raw split with no augmentation, per the paper's protocol.
 
