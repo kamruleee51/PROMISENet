@@ -1,19 +1,3 @@
-"""
-Prepare CAMUS dataset with offline augmentations.
-
-Expects pre-separated CAMUS data in:
-    raw_dir/
-        train/images/  train/masks/
-        val/images/    val/masks/
-        test/images/   test/masks/
-
-Produces augmented data in:
-    out_dir/
-        train/images/{original,H_flipped,V_flipped,rotated,combined}/
-        train/masks/{original,H_flipped,V_flipped,rotated,combined}/
-        val/images/... val/masks/...
-        test/images/... test/masks/...
-"""
 import argparse
 import os
 from augment_utils import augment_split

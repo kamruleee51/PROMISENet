@@ -1,23 +1,3 @@
-"""
-Automated bounding-box extraction from ground-truth masks.
-
-Two genuinely different extraction functions are used across the four datasets — preserved here
-exactly as verified in the source notebooks rather than unified into one, since unifying them would
-change the training distribution for at least one dataset/model combination relative to what actually
-produced the paper's reported numbers:
-
-- ISIC-2017 uses `get_bounding_box`: a single box from the whole (binary) mask via np.where.
-  PROMISE-CNN's ISIC notebook expands it by a FIXED +/-20px on each side (no randomness).
-  PROMISE-Txformer's ISIC notebook expands it by a RANDOM [0,20)px offset per side, re-drawn every
-  call (so every training epoch sees a different perturbation for the same image).
-  Use `random_perturb=False` / `True` respectively to match.
-
-- Kvasir-Polyp, Kvasir-Instrument, and CAMUS all use `get_bounding_boxes_from_mask`: one box per
-  connected component via cv2.findContours (so CAMUS gets one box per cardiac chamber; the two
-  Kvasir datasets typically have one blob, so a single box), with a RANDOM [0, max_perturb)px offset
-  per side, max_perturb=10 for all three (not 20). Identical across PROMISE-CNN and PROMISE-Txformer
-  for these three datasets — no per-model variant needed here.
-"""
 import numpy as np
 import cv2
 

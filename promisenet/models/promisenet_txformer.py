@@ -1,8 +1,3 @@
-"""
-PROMISE-Txformer: MONAI UNETR backbone with PCCA applied at each encoder-stage projection and the
-ViT bottleneck. Source: Unetr_monai/gated_unetr/{dataset}/*.ipynb, verified identical across all
-four datasets (only num_classes/in_channels vary).
-"""
 from __future__ import annotations
 
 from collections.abc import Sequence

@@ -1,10 +1,3 @@
-"""
-Train PROMISE-CNN or PROMISE-Txformer on one of the four datasets.
-
-Usage:
-    python train.py --config configs/isic2017.yaml --model cnn --data_dir ./data/isic2017
-    python train.py --config configs/camus.yaml --model transformer --data_dir ./data/camus_augmented
-"""
 import argparse
 import os
 from glob import glob

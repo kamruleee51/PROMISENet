@@ -1,20 +1,3 @@
-"""
-Dice + cross-entropy loss, matching the training notebooks exactly:
-
-1. Dice-loss differentiability varies by (model, dataset), set via `differentiable_dice` in each
-   configs/*.yaml. PROMISE-CNN (all datasets) and PROMISE-Txformer on CAMUS compute the Dice term from
-   `argmax`-then-one-hot predictions, which carries no real gradient — training is effectively driven
-   by the cross-entropy term alone in these cases. PROMISE-Txformer on the three binary datasets
-   computes Dice from softmax probabilities (properly differentiable).
-
-2. Loss weights depend only on binary vs. multiclass:
-   - Binary (ISIC-2017, Kvasir-Polyp, Kvasir-Instrument): `dice_weight=1.0, ce_weight=0.5`.
-   - Multiclass (CAMUS): `dice_weight=0.6, ce_weight=0.4`.
-
-3. `compute_loss` must be called with whatever the model returns directly — do NOT insert an extra
-   softmax before calling it. PROMISE-CNN's `forward()` applies softmax internally (so `predictions`
-   is already probabilities); PROMISE-Txformer's does not (raw logits).
-"""
 import random
 
 import torch

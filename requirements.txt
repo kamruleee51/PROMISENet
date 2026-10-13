@@ -1,5 +1,5 @@
-torch==2.5.1
-torchvision==0.20.1
+torch>=2.7
+torchvision>=0.22
 monai
 albumentations==2.0.5
 opencv-python==4.10.0.84
@@ -8,3 +8,4 @@ pandas
 scipy
 PyYAML
 tqdm
+einops

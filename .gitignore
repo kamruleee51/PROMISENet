@@ -7,3 +7,7 @@ venv/
 *.pth
 .ipynb_checkpoints/
 .DS_Store
+
+# training logs
+*.log
+*.err

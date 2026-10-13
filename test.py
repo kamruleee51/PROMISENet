@@ -1,11 +1,3 @@
-"""
-Evaluate a trained PROMISE-CNN / PROMISE-Txformer checkpoint on a test split, writing per-image
-metrics (DSC/IoU/HD95/FNR/FPR) to a CSV and predicted masks to disk.
-
-Usage:
-    python test.py --config configs/isic2017.yaml --model cnn --data_dir ./data/isic2017 \
-                    --weights outputs/isic2017_cnn_best.pth --out_dir outputs/isic2017_cnn_test
-"""
 import argparse
 import os
 from glob import glob

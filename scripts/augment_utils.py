@@ -1,7 +1,3 @@
-"""
-Offline augmentation utilities for CAMUS dataset.
-Exact augmentation classes from the original data_preparation.ipynb notebook.
-"""
 import os
 import cv2
 import random

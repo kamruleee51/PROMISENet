@@ -1,13 +1,3 @@
-"""
-PROMISE-CNN: U-Net backbone with PCCA applied at every encoder stage, the bottleneck, and every
-decoder stage.
-
-Faithful extraction from params_flops/xx/pcca_unet.ipynb, the one file in the source repo confirmed
-(by code inspection) to apply PCCA at literally every stage as the paper describes, and dataset-agnostic
-(num_input_channels/num_classes are constructor args). Independently confirmed to reproduce the paper's
-exact reported numbers for ISIC-2017 via the same architecture under
-Experiments_2.0/ISIC_2017/MultiGateAttention/unet/Attention_fusion_both_encoder_decoder/SE/.
-"""
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

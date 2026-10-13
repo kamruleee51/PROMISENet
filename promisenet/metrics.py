@@ -1,14 +1,3 @@
-"""
-Post-hoc evaluation metrics on numpy masks (for test.py, computed once per predicted/ground-truth
-mask pair — distinct from promisenet.losses.DiceIoU, which operates on batched torch tensors during
-training/validation).
-
-`hd95` is a direct Python port of the source repo's MATLAB evaluation pipeline
-(Experiments_2.0/Evaluation/computeHD95.m): extract each mask's boundary pixels, compute the
-symmetric nearest-neighbor distances (GT->pred and pred->GT), and take the 95th percentile of the
-combined set. Requires scipy (ndimage for boundary extraction via binary erosion, spatial.cKDTree
-for nearest-neighbor lookup).
-"""
 import numpy as np
 from scipy import ndimage
 from scipy.spatial import cKDTree

@@ -1,21 +1,3 @@
-"""
-Prepare Kvasir-Polyp or Kvasir-Instrument with offline augmentations, using the same augmentation
-pipeline as CAMUS (scripts/augment_utils.py's `augment_split`). Per the paper's training protocol,
-offline augmentation is applied to CAMUS, Kvasir-Polyp, and Kvasir-Instrument (only ISIC-2017 is not).
-
-Expects pre-separated data in:
-    raw_dir/
-        train/images/  train/masks/
-        val/images/    val/masks/
-        test/images/   test/masks/
-
-Produces augmented data in:
-    out_dir/
-        train/images/{original,H_flipped,V_flipped,rotated,combined}/
-        train/masks/{original,H_flipped,V_flipped,rotated,combined}/
-        val/images/... val/masks/...
-        test/images/... test/masks/...
-"""
 import argparse
 import os
 from augment_utils import augment_split

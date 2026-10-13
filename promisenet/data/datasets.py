@@ -1,21 +1,3 @@
-"""
-Dataset classes for the four benchmarks.
-
-ISICDataset: single-box binary dataset. `random_perturb` must be set per the model being trained —
-    False for PROMISE-CNN, True for PROMISE-Txformer (see bbox_utils.get_bounding_box's docstring for
-    why these differ; it's a real discrepancy between the two source notebooks, preserved here).
-
-CAMUSDataset: multi-class, multi-box (one box per cardiac chamber) dataset.
-
-KvasirDataset: shared by Kvasir-Polyp and Kvasir-Instrument — both binary, both use contour-based
-    multi-box extraction (typically yielding one box, since these are usually single-blob masks),
-    identical between PROMISE-CNN and PROMISE-Txformer (no random_perturb split needed here, unlike
-    ISIC).
-
-All three need `custom_collate_fn` for batching, since the number of boxes per image can vary (CAMUS:
-different numbers of visible chambers; Kvasir: occasionally zero or multiple polyp/instrument blobs).
-ISICDataset always yields exactly one box, so it works with `custom_collate_fn` too (max_boxes=1).
-"""
 import os
 import cv2
 import torch
