@@ -101,29 +101,43 @@ If you prefer pip, `pip install -r requirements.txt` also works, but it installs
 
 ## 🏋️ Training
 
+**ISIC-2017, PROMISE-CNN**
 ```bash
-# ISIC-2017, PROMISE-CNN
 uv run python train.py --config configs/isic2017.yaml --model cnn --data_dir ./data/ISIC_2017
+```
 
-# ISIC-2017, PROMISE-Txformer
+**ISIC-2017, PROMISE-Txformer**
+```bash
 uv run python train.py --config configs/isic2017.yaml --model transformer --data_dir ./data/ISIC_2017
+```
 
-# Kvasir-Polyp, PROMISE-CNN
+**Kvasir-Polyp, PROMISE-CNN**
+```bash
 uv run python train.py --config configs/kvasir_polyp.yaml --model cnn --data_dir ./data/kvasir_polyp_augmented
+```
 
-# Kvasir-Polyp, PROMISE-Txformer
+**Kvasir-Polyp, PROMISE-Txformer**
+```bash
 uv run python train.py --config configs/kvasir_polyp.yaml --model transformer --data_dir ./data/kvasir_polyp_augmented
+```
 
-# Kvasir-Instrument, PROMISE-CNN
+**Kvasir-Instrument, PROMISE-CNN**
+```bash
 uv run python train.py --config configs/kvasir_instrument.yaml --model cnn --data_dir ./data/kvasir_instrument_augmented
+```
 
-# Kvasir-Instrument, PROMISE-Txformer
+**Kvasir-Instrument, PROMISE-Txformer**
+```bash
 uv run python train.py --config configs/kvasir_instrument.yaml --model transformer --data_dir ./data/kvasir_instrument_augmented
+```
 
-# CAMUS, PROMISE-CNN
+**CAMUS, PROMISE-CNN**
+```bash
 uv run python train.py --config configs/camus.yaml --model cnn --data_dir ./data/camus_augmented
+```
 
-# CAMUS, PROMISE-Txformer
+**CAMUS, PROMISE-Txformer**
+```bash
 uv run python train.py --config configs/camus.yaml --model transformer --data_dir ./data/camus_augmented
 ```
 
@@ -137,6 +151,8 @@ Prompts are bounding boxes extracted automatically from the ground-truth masks a
 ---
 
 ## 📈 Evaluation
+
+Example: test PROMISE-CNN on ISIC-2017. For any other dataset or model, change `--config`, `--model`, `--data_dir` and `--weights` to match the checkpoint you trained.
 
 ```bash
 uv run python test.py --config configs/isic2017.yaml --model cnn \
